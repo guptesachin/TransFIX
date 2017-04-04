@@ -119,12 +119,12 @@
                     </checkinComment>
                     <content>${project.reporting.outputDirectory}</content>
                     <skipDeletedFiles>true</skipDeletedFiles>
-                    <pubScmUrl>scm:git:git@github.com:OpenHFT/TransFIX</pubScmUrl>
+                    <pubScmUrl>scm:git:git@github.com:guptesachin/TransFIX</pubScmUrl>
                     <scmBranch>gh-pages</scmBranch>
                 </configuration>
             </plugin>
 
-            <plugin>
+            <!--  <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
@@ -134,15 +134,15 @@
                     <excludePackageNames>net.openhft.chronicle.hash.serialization.internal
                     </excludePackageNames>
                 </configuration>
-            </plugin>
+            </plugin> -->
 
         </plugins>
     </build>
 
     <scm>
-        <url>scm:git:git@github.com:OpenHFT/TransFIX.git</url>
-        <connection>scm:git:git@github.com:OpenHFT/TransFIX.git</connection>
-        <developerConnection>scm:git:git@github.com:OpenHFT/TransFIX.git</developerConnection>
+        <url>scm:git:git@github.com:guptesachin/TransFIX.git</url>
+        <connection>scm:git:git@github.com:guptesachin/TransFIX.git</connection>
+        <developerConnection>scm:git:git@github.com:guptesachin/TransFIX.git</developerConnection>
         <tag>master</tag>
     </scm>
 
