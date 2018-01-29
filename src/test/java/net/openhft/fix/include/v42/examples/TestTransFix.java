@@ -16,6 +16,7 @@ import java.nio.ByteOrder;
 
 import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("deprecation")
 public class TestTransFix {
 
     public static void main(String[] args)   {
@@ -34,36 +35,39 @@ public class TestTransFix {
     @Test
     @Ignore
     public void testReadEditModifyFixMsg()   {
-        String sampleFixMessage = "8=FIX.4.2|9=154|35=6|49=BRKR|56=INVMGR|34=238|52=19980604-07:59:56|23=115686|28=N|55=AXX.AX|54=2|27=250000|44=7900.000000|25=H|10=231|";
+    	String sampleFixMessage = "8=FIX.4.2|9=154|35=6|49=BRKR|56=INVMGR|34=238|52=19980604-07:59:56|23=115686|28=N|55=AXX.AX|54=2|27=250000|44=7900.000000|25=H|10=231|";
 
-        //create fix message pool with default configuration for each FixMessage
-        FixMessagePool fmp = new FixMessagePool( null, Runtime.getRuntime().availableProcessors(), true );
-        FixMessageContainer fmc = fmp.getFixMessageContainer();
+    	//create fix message pool with default configuration for each FixMessage
+    	FixMessagePool fmp = new FixMessagePool( null, Runtime.getRuntime().availableProcessors(), true );
+    	FixMessageContainer fmc = fmp.getFixMessageContainer();
 
-        //check out a FixMessage object
-        FixMessage fm = fmc.getFixMessage();
+    	//check out a FixMessage object
+    	FixMessage fm = fmc.getFixMessage();
 
-        //create an instance of FixMessageReader instance for parsing
-        FixMessageReader fmr = new FixMessageReader(fm);
+    	//create an instance of FixMessageReader instance for parsing
+    	FixMessageReader fmr = new FixMessageReader(fm);
 
-        //An instance of NativeBytes for converting a String to bytes data
-        NativeBytes nativeBytes = new DirectStore(sampleFixMessage.length()).bytes();
-        nativeBytes.write(sampleFixMessage.replace('|', '\u0001').getBytes());
-        byte[] msgBytes = sampleFixMessage.replace('|', '\u0001').getBytes();
-        ByteBufferBytes byteBufBytes = new ByteBufferBytes(ByteBuffer.allocate(msgBytes.length).order(ByteOrder.nativeOrder()));
-        byteBufBytes.write(msgBytes);
+    	//An instance of NativeBytes for converting a String to bytes data
+    	try ( DirectStore ds = new DirectStore(sampleFixMessage.length()); ) {
+    		NativeBytes nativeBytes = ds.bytes();
+    		nativeBytes.write(sampleFixMessage.replace('|', '\u0001').getBytes());
+    		byte[] msgBytes = sampleFixMessage.replace('|', '\u0001').getBytes();
+    		ByteBufferBytes byteBufBytes = (ByteBufferBytes) ByteBufferBytes.wrap(ByteBuffer.allocate(msgBytes.length).order(ByteOrder.nativeOrder()));
+    		byteBufBytes.write(msgBytes);
 
-        //setting and parsing the fix message
-        fmr.setFixBytes(byteBufBytes);
-        fmr.parseFixMsgBytes();
+    		//setting and parsing the fix message
+    		fmr.setFixBytes(byteBufBytes);
+    		fmr.parseFixMsgBytes();
 
-        //gets a Field array with parsed data
-        Field[] field = fmr.getFixMessage().getField();
+    		//gets a Field array with parsed data
+    		Field[] field = fmr.getFixMessage().getField();
 
-        //Sets a checkedout FixMessage instance object with the FIX message information.
-        for (int i = 0; i < field.length; i++) {
-            fm.getField(i).setFieldData(field[i].getFieldData());
-        }
+    		//Sets a checkedout FixMessage instance object with the FIX message information.
+    		for (int i = 0; i < field.length; i++) {
+    			fm.getField(i).setFieldData(field[i].getFieldData());
+    		}
+    	}
+
     }
 
     /**
@@ -73,7 +77,6 @@ public class TestTransFix {
      */
     @Test
     public void testUpdateFixFieldForEmptyMessage() {
-        int fixMsgCount = Runtime.getRuntime().availableProcessors();
         FixMessagePool fmp = new FixMessagePool( null, Runtime.getRuntime().availableProcessors(), true );
         FixMessageContainer fmc = fmp.getFixMessageContainer();
         FixMessage fm = fmc.getFixMessage();
@@ -140,7 +143,6 @@ public class TestTransFix {
                 invalidFixMessage_6, invalidFixMessage_7
         };
 
-        int fixMsgCount = Runtime.getRuntime().availableProcessors();
         FixMessagePool fmp = new FixMessagePool( null, Runtime.getRuntime().availableProcessors(), true );
         FixMessageContainer fmc = fmp.getFixMessageContainer();
         FixMessage fm = fmc.getFixMessage();
@@ -175,11 +177,11 @@ public class TestTransFix {
      *
      * @
      */
-    @Test
+    
+	@Test
     public void testAvgParseTime()   {
 
         String sampleFixMessage = "8=FIX.4.2|9=154|35=6|49=BRKR|56=INVMGR|34=238|52=19980604-07:59:56|23=115686|28=N|55=FIA.MI|54=2|27=250000|44=7900.000000|25=H|10=231|";
-        int fixMsgCount = Runtime.getRuntime().availableProcessors();
         FixMessagePool fmp = new FixMessagePool( null, Runtime.getRuntime().availableProcessors(), true );
         FixMessageContainer fmc = fmp.getFixMessageContainer();
         FixMessage fm = fmc.getFixMessage();
@@ -209,10 +211,10 @@ public class TestTransFix {
      *
      * @
      */
-    @Test(timeout = 120000)
+    @SuppressWarnings("unused")
+	@Test(timeout = 120000)
     public void testAvgSetAndReverseLookuptime()   {
         String sampleFixMessage = "8=FIX.4.2|9=154|35=6|49=BRKR|56=INVMGR|34=238|52=19980604-07:59:56|23=115686|28=N|55=FIA.MI|54=2|27=250000|44=7900.000000|25=H|10=231|";
-        int fixMsgCount = Runtime.getRuntime().availableProcessors();
         FixMessagePool fmp = new FixMessagePool( null, Runtime.getRuntime().availableProcessors(), true );
         FixMessageContainer fmc = fmp.getFixMessageContainer();
         FixMessage fm = fmc.getFixMessage();

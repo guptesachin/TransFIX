@@ -23,6 +23,7 @@ import java.util.EnumSet;
  *
  * @author Adam Rosenberger
  */
+@SuppressWarnings("unused")
 class FieldMetadata {
     private final int fieldNumber;
     private final FixField field;

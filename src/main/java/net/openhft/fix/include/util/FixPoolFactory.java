@@ -24,7 +24,6 @@ import java.io.Externalizable;
  *
  * @param <FixMessage>- FixMessage Object
  */
-@SuppressWarnings("hiding")
 public interface FixPoolFactory<FixMessage> extends Externalizable {
     /**
      * This method creates a new instance of FixMessage object to be used by the FixMessagePool.

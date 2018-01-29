@@ -82,10 +82,10 @@ public class FixMessageReader {
      *
      * @param fixMsgChars - String representation of the FIX message
      */
-    public void setFixBytes( String fixMsgChars ) {
+	public void setFixBytes( String fixMsgChars ) {
         this.fixMsgChars = fixMsgChars;
         byte[] msgBytes = fixMsgChars.replace('|', '\u0001').getBytes();
-        ByteBufferBytes byteBufBytes = new ByteBufferBytes(ByteBuffer.allocate(msgBytes.length).order(ByteOrder.nativeOrder()));
+        ByteBufferBytes byteBufBytes = (ByteBufferBytes) ByteBufferBytes.wrap(ByteBuffer.allocate(msgBytes.length).order(ByteOrder.nativeOrder()));
         byteBufBytes.write( msgBytes );
         if ( fixMsgBytes != null ) {
             this.fixMsgBytes.clear();
@@ -161,7 +161,8 @@ public class FixMessageReader {
      * @param fieldValue
      * @
      */
-    private void updateFixMessageFields(int fieldID, Bytes fieldValue) {
+    @SuppressWarnings("unused")
+	private void updateFixMessageFields(int fieldID, Bytes fieldValue) {
 
         fixMsg.getField(fieldID).setName(FixConstants.fieldsName[fieldID]);
         fixMsg.getField(fieldID).setNumber(fieldID);
@@ -217,7 +218,7 @@ public class FixMessageReader {
         //field[fieldID].printValues();
     }
 
-    public static void main(String[] args)   {
+	public static void main(String[] args)   {
         String sampleFixMessage = "8=FIX.4.2|9=154|35=6|49=BRKR|56=INVMGR|34=238|" +
                 "52=19980604-07:59:56|23=115686|28=N|55=FIA.MI|54=2|27=250000|" +
                 "44=7900.000000|25=H|10=231|";
@@ -228,7 +229,7 @@ public class FixMessageReader {
         NativeBytes nativeBytes = new DirectStore(sampleFixMessage.length()).bytes();
         nativeBytes.write(sampleFixMessage.replace('|', '\u0001').getBytes());
         byte[] msgBytes = sampleFixMessage.replace('|', '\u0001').getBytes();
-        ByteBufferBytes byteBufBytes = new ByteBufferBytes( ByteBuffer.allocate(msgBytes.length ).order(ByteOrder.nativeOrder()));
+        ByteBufferBytes byteBufBytes = (ByteBufferBytes) ByteBufferBytes.wrap( ByteBuffer.allocate(msgBytes.length ).order(ByteOrder.nativeOrder()));
         byteBufBytes.write(msgBytes);
 
         int counter = 0;

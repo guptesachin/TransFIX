@@ -51,7 +51,7 @@ public class FixMessagePool implements FixPoolFactory<FixMessage> {
      * @param useDefault     -instructs to create from FixConfig. Currently, only default=true
      *                       implemented.
      */
-    @SuppressWarnings({"unchecked", "restriction"})
+    @SuppressWarnings("restriction")
     public FixMessagePool(FixPoolFactory<FixMessage> fixPoolFactory, int poolSize,
                           boolean useDefault) {
         if (fixPoolFactory == null) {
@@ -130,7 +130,6 @@ public class FixMessagePool implements FixPoolFactory<FixMessage> {
      * the state of the FixMessage Object's state. The state of a FixMessage object can be either
      * in-use OR available.
      */
-    @SuppressWarnings("hiding")
     public static class FixMessageContainer implements Externalizable {
         private FixMessage fixMessage;
         public static final int AVAILABLE_STATE = 0;
@@ -154,7 +153,6 @@ public class FixMessagePool implements FixPoolFactory<FixMessage> {
             out.writeObject(fixMessage);
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public void readExternal(ObjectInput in) throws IOException,
                 ClassNotFoundException {
@@ -184,7 +182,6 @@ public class FixMessagePool implements FixPoolFactory<FixMessage> {
         out.writeInt(objectPutPosition);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {

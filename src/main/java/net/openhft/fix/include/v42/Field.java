@@ -37,7 +37,7 @@ public class Field implements FixFieldInterface {
     protected int valueSize;
     int _defaultSize = 5000;
     
-    protected ByteBufferBytes fieldData = new ByteBufferBytes( ByteBuffer.allocate( _defaultSize ).order( ByteOrder.nativeOrder() ) );
+    protected ByteBufferBytes fieldData = (ByteBufferBytes) ByteBufferBytes.wrap( ByteBuffer.allocate( _defaultSize ).order( ByteOrder.nativeOrder() ) );
     private static final byte MULTI_VALUE_DELIM = 1;
     
 
