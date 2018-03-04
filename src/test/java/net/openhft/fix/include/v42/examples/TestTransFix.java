@@ -163,7 +163,6 @@ public class TestTransFix {
                 }
                 fm.reset();
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 fm.reset();
             }
